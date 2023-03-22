@@ -55,9 +55,13 @@ router.delete('/:id', mid.checkProjectId, (req, res, next) => {
 })
 
 
-router.get('/:id/actions', (req, res) => {
-// Returns an array of actions (could be empty) belonging to a project with the given id.
-// If there is no project with the given id it responds with a status code 404.
+router.get('/:id/actions', mid.checkProjectId, (req, res, next) => {
+    const { id } = req.params;
+    Projects.getProjectActions(id)
+        .then(actions => {
+            res.status(200).json(actions);
+        })
+        .catch(next);
 })
 
 
