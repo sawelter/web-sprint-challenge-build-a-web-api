@@ -19,12 +19,12 @@ async function checkNewAction(req, res, next) {
         description,
         notes,
         completed } = req.body;
-    let newCompleted = false;
     if(!project_id || !description || !notes) {
         res.status(400).json(`Missing required field`);
-    } else if(!completed || completed === null || completed === undefined) {
-        newCompleted = false;
-    } else {
+    } 
+
+    let newCompleted = false;
+    if(completed) {
         newCompleted = true;
     }
 

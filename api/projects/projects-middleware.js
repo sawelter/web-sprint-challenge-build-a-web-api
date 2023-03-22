@@ -17,7 +17,7 @@ async function checkNewProject(req, res, next) {
     const { name, description, completed } = req.body;
     if(!name || !description) {
         res.status(400).json(`Missing required text field`);  
-    } else if(req.method === "PUT" && completed === null || completed === undefined) {
+    } else if(req.method === "PUT" && (completed === null || completed === undefined)) {
         res.status(400).json(`Completed status missing`);
     } else {
         next();

@@ -42,6 +42,12 @@ router.post('/', [mid.checkProjectId, mid.checkNewAction], (req, res, next) => {
 // If the request body is missing any of the required fields it responds with a status code 400.
 router.put('/:id', [mid.checkActionId, mid.checkNewAction, mid.checkProjectId], (req, res, next) => {
     const { id } = req.params;
+
+    Actions.update(id, req.action)
+        .then(action => {
+            res.status(200).json(action);
+        })
+        .catch(next);
 })
 
 //  [DELETE] /api/actions/:id

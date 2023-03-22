@@ -20,7 +20,6 @@ router.get('/:id', mid.checkProjectId, (req, res, next) => {
 })
 
 
-
 router.post('/', [mid.checkNewProject, mid.completed], (req, res, next) => {
     const { name, description, completed } = req.body;
 
@@ -49,7 +48,7 @@ router.delete('/:id', mid.checkProjectId, (req, res, next) => {
 
     Projects.remove(id)
         .then(() => {
-            res.status(200);
+            res.status(200).json(`Project removed successfully`);
         })
         .catch(next);
 })
