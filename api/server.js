@@ -9,7 +9,7 @@ const actionsRouter = require('./actions/actions-router.js')
 const projectsRouter = require('./projects/projects-router.js')
 
 server.use(express.json());
-server.use(actionsRouter);
-server.use(projectsRouter);
+server.use('/api/actions', actionsRouter);
+server.use('/api/projects', projectsRouter);
 
 module.exports = server;
