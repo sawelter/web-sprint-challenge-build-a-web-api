@@ -1,5 +1,4 @@
 // add middlewares here related to projects
-const express = require('express');
 const Projects = require('./projects-model.js')
 
 
@@ -17,13 +16,26 @@ async function checkProjectId(req, res, next) {
 async function checkNewProject(req, res, next) {
     const { name, description, completed } = req.body;
     if(!name || !description) {
-        res.status(400).json(`Missing required text field`);
+        res.status(400).json(`Missing required text field`);  
+    } else if(req.method === "PUT" && completed === null || completed === undefined) {
+        res.status(400).json(`Completed status missing`);
     } else {
         next();
     }
 }
 
+async function completed(req, res, next) {
+    const { completed } = req.body;
+    if(!completed) {
+        req.body.completed = false;
+    } else {
+        req.body.completed = true;
+    }
+    next();
+}
+
 module.exports = {
     checkProjectId,
     checkNewProject,
+    completed
 }

@@ -1,8 +1,9 @@
-// Write your "projects" router here!
 const express = require('express');
 const router = express.Router();
+
 const Projects = require('./projects-model.js');
 const mid = require('./projects-middleware.js');
+
 
 
 router.get('/', (req, res, next) => {
@@ -19,9 +20,13 @@ router.get('/:id', mid.checkProjectId, (req, res, next) => {
 })
 
 
-router.post('/', mid.checkNewProject, (req, res, next) => {
-    const { name, description } = req.body;
-    Projects.insert({name, description})
+
+router.post('/', [mid.checkNewProject, mid.completed], (req, res, next) => {
+    const { name, description, completed } = req.body;
+
+    console.log(req.method);
+
+    Projects.insert({name, description, completed})
         .then(project => {
             res.status(201).json(project);
         })
@@ -30,18 +35,23 @@ router.post('/', mid.checkNewProject, (req, res, next) => {
 
 
 router.put('/:id', [mid.checkProjectId, mid.checkNewProject], (req, res, next) => {
-    const { name, description } = req.body;
+    const { name, description, completed } = req.body;
     const { id } = req.params;
-    Projects.update(id, {name, description})
+    Projects.update(id, {name, description, completed})
         .then(project => {
             res.status(201).json(project);
         })
         .catch(next);
 })
 
-router.delete('/:id', (req, res) => {
-// Returns no response body.
-// If there is no project with the given id it responds with a status code 404.
+router.delete('/:id', mid.checkProjectId, (req, res, next) => {
+    const { id } = req.params;
+
+    Projects.remove(id)
+        .then(() => {
+            res.status(200);
+        })
+        .catch(next);
 })
 
 
