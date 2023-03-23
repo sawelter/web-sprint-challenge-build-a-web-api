@@ -25,7 +25,7 @@ router.post('/', [mid.checkNewProject, mid.completed], (req, res, next) => {
 
     console.log(req.method);
 
-    Projects.insert({name, description, completed})
+    Projects.insert(req.project)
         .then(project => {
             res.status(201).json(project);
         })

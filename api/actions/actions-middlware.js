@@ -34,6 +34,7 @@ async function checkNewAction(req, res, next) {
         notes: notes,
         completed: newCompleted
     }
+    
     req.action = newAction;
     next();
 }

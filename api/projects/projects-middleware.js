@@ -15,13 +15,27 @@ async function checkProjectId(req, res, next) {
 
 async function checkNewProject(req, res, next) {
     const { name, description, completed } = req.body;
+
     if(!name || !description) {
         res.status(400).json(`Missing required text field`);  
     } else if(req.method === "PUT" && (completed === null || completed === undefined)) {
         res.status(400).json(`Completed status missing`);
-    } else {
-        next();
+    } 
+
+
+    let newCompleted = false;
+    if(completed) {
+        newCompleted = true;
     }
+
+    const newProject = {
+        name: name,
+        description: description,
+        completed: newCompleted
+    }
+
+    req.project = newProject;
+    next();
 }
 
 async function completed(req, res, next) {
